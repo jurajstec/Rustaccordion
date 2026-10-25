@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://dt3b4p1bm7kym"]
+
+[ext_resource type="Texture2D" uid="uid://b33w5sux1hbyh" path="res://icon.svg" id="1_3vyb7"]
+[ext_resource type="Script" uid="uid://dymfibm32k3oc" path="res://scripts/player.gd" id="1_g2els"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ygwv5"]
+size = Vector2(93, 80)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qhqgy"]
+bg_color = Color(0.20332181, 0.20332184, 0.2033217, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g2els"]
+bg_color = Color(0.006047725, 0.6243518, 0.9999998, 1)
+
+[node name="Player" type="CharacterBody2D" unique_id=1498919203]
+z_index = 5
+script = ExtResource("1_g2els")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1523803059]
+position = Vector2(0, -67)
+texture = ExtResource("1_3vyb7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1883196783]
+position = Vector2(0.5, -43)
+shape = SubResource("RectangleShape2D_ygwv5")
+
+[node name="StaminaBar" type="ProgressBar" parent="." unique_id=137061022]
+offset_left = 86.0
+offset_top = -127.0
+offset_right = 90.0
+offset_bottom = -100.0
+scale = Vector2(4.56, 4.52)
+theme_override_styles/background = SubResource("StyleBoxFlat_qhqgy")
+theme_override_styles/fill = SubResource("StyleBoxFlat_g2els")
+fill_mode = 3
+show_percentage = false
