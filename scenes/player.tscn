@@ -8,27 +8,35 @@ size = Vector2(93, 80)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qhqgy"]
 bg_color = Color(0.20332181, 0.20332184, 0.2033217, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g2els"]
 bg_color = Color(0.006047725, 0.6243518, 0.9999998, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [node name="Player" type="CharacterBody2D" unique_id=1498919203]
 z_index = 5
+collision_layer = 2
 script = ExtResource("1_g2els")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1523803059]
-position = Vector2(0, -67)
 texture = ExtResource("1_3vyb7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1883196783]
-position = Vector2(0.5, -43)
+position = Vector2(0.5, 24)
 shape = SubResource("RectangleShape2D_ygwv5")
 
 [node name="StaminaBar" type="ProgressBar" parent="." unique_id=137061022]
 offset_left = 86.0
-offset_top = -127.0
+offset_top = -60.000008
 offset_right = 90.0
-offset_bottom = -100.0
+offset_bottom = -33.000008
 scale = Vector2(4.56, 4.52)
 theme_override_styles/background = SubResource("StyleBoxFlat_qhqgy")
 theme_override_styles/fill = SubResource("StyleBoxFlat_g2els")
