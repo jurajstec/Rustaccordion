@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://envumitt2iff"]
+
+[ext_resource type="Script" uid="uid://e5rn7kxqyu52" path="res://scripts/killzone.gd" id="1_xlapc"]
+
+[node name="Killzone" type="Area2D" unique_id=1529094594]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_xlapc")
+
+[node name="Timer" type="Timer" parent="." unique_id=1010051587]
+wait_time = 0.6
+one_shot = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

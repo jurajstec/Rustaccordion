@@ -2,7 +2,7 @@
 extends CharacterBody2D
 
 
-const SPEED = 220.0 # Horizontal movement speed
+const SPEED = 280.0 # Horizontal movement speed
 const ASCEND_SPEED = 300.0 # Maximum upward flight speed
 @export var deceleration = 500.0 # How quickly the player slows down horizontally
 
@@ -14,22 +14,35 @@ const AIR_BOOST_ACCELERATION = 1900.0 # Strength of the extra mid-air boost
 const AIR_BOOST_COST = 0.10
 
 
-@export var max_energy: float = 1.3 # Maximum stamina
+@export var max_energy: float = 1.3 
 @export var recharge_speed: float = 4.5 
-var energy_left: float # Current stamina remaining
+var energy_left: float 
+@export var max_health: float = 100.0
+var health: float
+var displayed_health: float 
+@export var health_bar_speed: float = 100.0
 
 
-var air_boost_time: float = 0.1 # Time for the extra mid-air boost
+var air_boost_time: float # Time for the extra mid-air boost(declared in the script a bit below)
 
 
 # Stamina bar
 @onready var stamina_bar: ProgressBar = $StaminaBar
+#HEalth bar
+@onready var health_bar: ProgressBar = $"../CanvasLayer/HealthBar"
 
 
 func _ready() -> void:
 	energy_left = max_energy
 	stamina_bar.max_value = max_energy
 	stamina_bar.value = energy_left
+	health = max_health
+	displayed_health = health
+	health_bar.max_value = max_health
+	health_bar.value = health
+	
+
+
 
 
 func _physics_process(delta: float) -> void:
@@ -62,9 +75,10 @@ func _physics_process(delta: float) -> void:
 		elif energy_left >= AIR_BOOST_COST:
 			air_boost_time = AIR_BOOST_DURATION
 			energy_left -= AIR_BOOST_COST
+			
 
 
-	if Input.is_action_pressed("ui_accept") and energy_left > 0:
+	if Input.is_action_pressed("ui_accept") and energy_left > 0.0:
 		var flight_power = FLIGHT_ACCELERATION
 
 		# Give extra flight power when falling otherwise it's impossible to get back up
@@ -102,11 +116,26 @@ func _physics_process(delta: float) -> void:
 		
 	else: velocity.x = move_toward(velocity.x, 0, deceleration/1.5 * delta)
 		
-
-
+		
+	if Input.is_action_just_pressed("ui_accept"):
+		take_damage(10.0)
+	
 	#sync stamina with the UI bar
 	stamina_bar.value = energy_left
+	
+	displayed_health = move_toward(
+	displayed_health,
+	health,
+	health_bar_speed * delta
+	)
+
+	health_bar.value = displayed_health
 
 
 	#apply
 	move_and_slide()
+
+func take_damage(amount: float) -> void:
+		health = maxf(health - amount, 0.0)
+		health_bar.value = health
+		

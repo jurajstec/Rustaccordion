@@ -1,19 +1,71 @@
 [gd_scene format=3 uid="uid://jgvb2pejx1tl"]
 
 [ext_resource type="PackedScene" uid="uid://dt3b4p1bm7kym" path="res://scenes/player.tscn" id="1_uwrxv"]
+[ext_resource type="PackedScene" uid="uid://cn5qro0kxnhx6" path="res://scenes/health_bar.tscn" id="2_iywne"]
 [ext_resource type="PackedScene" uid="uid://cmpdueumiba2a" path="res://scenes/ground.tscn" id="2_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://cquit1txr7hmy" path="res://scenes/platform.tscn" id="3_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://envumitt2iff" path="res://scenes/killzone.tscn" id="4_lbhrr"]
+
+[sub_resource type="GDScript" id="GDScript_iywne"]
+script/source = "extends Node2D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_xlapc"]
 
 [node name="Game" type="Node2D" unique_id=621689657]
+position = Vector2(0, -1)
+script = SubResource("GDScript_iywne")
 
 [node name="Player" parent="." unique_id=1498919203 instance=ExtResource("1_uwrxv")]
-position = Vector2(-5, 60)
+position = Vector2(-2, 5)
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=961602275]
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=961602275]
+position = Vector2(5, -60)
+zoom = Vector2(0.7, 0.7)
+limit_left = -1055
+limit_right = 1101
+limit_bottom = 794
+limit_smoothed = true
+position_smoothing_enabled = true
+position_smoothing_speed = 3.0
 
 [node name="ground" parent="." unique_id=890221615 instance=ExtResource("2_yqjtg")]
-position = Vector2(-548, 269)
+position = Vector2(2, 169)
 scale = Vector2(10.813937, 7.3672543)
 
 [node name="platform" parent="." unique_id=1478797015 instance=ExtResource("3_lnu2h")]
-position = Vector2(190, 10)
+position = Vector2(258, -173)
+
+[node name="platform2" parent="." unique_id=989877246 instance=ExtResource("3_lnu2h")]
+position = Vector2(-385, -431)
+
+[node name="platform3" parent="." unique_id=1118409064 instance=ExtResource("3_lnu2h")]
+position = Vector2(28, -815)
+
+[node name="Killzone" parent="." unique_id=1529094594 instance=ExtResource("4_lbhrr")]
+position = Vector2(0, 480)
+scale = Vector2(4.62421, 3.36)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone" unique_id=2082956401]
+position = Vector2(0.21625316, 2.9761868)
+scale = Vector2(1.2790165, 1.6618915)
+shape = SubResource("WorldBoundaryShape2D_xlapc")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1785485690]
+
+[node name="HealthBar" parent="CanvasLayer" unique_id=1385275340 instance=ExtResource("2_iywne")]
+anchors_preset = -1
+offset_left = 836.0
+offset_top = 608.0
+offset_right = 1136.0
+offset_bottom = 633.0
