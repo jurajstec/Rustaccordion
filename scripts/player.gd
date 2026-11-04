@@ -1,73 +1,91 @@
-
 extends CharacterBody2D
-
-
-const SPEED = 280.0 # Horizontal movement speed
-const ASCEND_SPEED = 300.0 # Maximum upward flight speed
-@export var deceleration = 500.0 # How quickly the player slows down horizontally
-
-
-const FLIGHT_ACCELERATION = 1800.0 # Upward acceleration while flying
-const TAKEOFF_BOOST = 270.0 # Initial boost when taking off from the ground
-const AIR_BOOST_DURATION = 0.1 # Duration of the extra mid-air boost
-const AIR_BOOST_ACCELERATION = 1900.0 # Strength of the extra mid-air boost
+ 
+ 
+const SPEED = 280.0
+const ASCEND_SPEED = 350.0
+@export var deceleration = 500.0
+ 
+const FLIGHT_ACCELERATION = 1800.0
+const TAKEOFF_BOOST = 270.0
+const AIR_BOOST_DURATION = 0.2
+const AIR_BOOST_ACCELERATION = 1900.0
 const AIR_BOOST_COST = 0.10
-
-
-@export var max_energy: float = 1.3 
-@export var recharge_speed: float = 4.5 
-var energy_left: float 
-@export var max_health: float = 100.0
+ 
+@export var max_energy: float = 1.3
+@export var recharge_speed: float = 4.5
+var energy_left: float
+ 
+# 6 health points = 3 full hearts.
+# 1 health point = half a heart.
+@export var max_health: float = 6.0
 var health: float
-var displayed_health: float 
-@export var health_bar_speed: float = 100.0
-
-
-var air_boost_time: float # Time for the extra mid-air boost(declared in the script a bit below)
-
-
-# Stamina bar
+ 
+var air_boost_time: float
+var hearts: Array[Label] = []
+ 
 @onready var stamina_bar: ProgressBar = $StaminaBar
-#HEalth bar
-@onready var health_bar: ProgressBar = $"../CanvasLayer/HealthBar"
-
-
+ 
+ 
 func _ready() -> void:
 	energy_left = max_energy
 	stamina_bar.max_value = max_energy
 	stamina_bar.value = energy_left
+ 
 	health = max_health
-	displayed_health = health
-	health_bar.max_value = max_health
-	health_bar.value = health
-	
-
-
-
-
+ 
+	create_heart_ui()
+	update_hearts()
+ 
+ 
+func create_heart_ui() -> void:
+	# Finds your existing CanvasLayer.
+	var ui_layer: CanvasLayer = get_node_or_null("../CanvasLayer") as CanvasLayer
+ 
+	# Creates one if your scene does not already have one.
+	if ui_layer == null:
+		ui_layer = CanvasLayer.new()
+		ui_layer.name = "CanvasLayer"
+		get_parent().add_child(ui_layer)
+ 
+	# Creates a row to hold the three hearts.
+	var hearts_box := HBoxContainer.new()
+	hearts_box.name = "Hearts"
+	hearts_box.position = Vector2(20, 20)
+	hearts_box.add_theme_constant_override("separation", 5)
+	ui_layer.add_child(hearts_box)
+ 
+	# Creates three visible heart labels.
+	for i in range(3):
+		var heart := Label.new()
+		heart.name = "Heart" + str(i + 1)
+		heart.custom_minimum_size = Vector2(48, 55)
+		heart.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		heart.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		heart.add_theme_font_size_override("font_size", 42)
+ 
+		hearts_box.add_child(heart)
+		hearts.append(heart)
+ 
+ 
 func _physics_process(delta: float) -> void:
-
-
+ 
 	if is_on_floor():
 		energy_left = move_toward(
 			energy_left,
 			max_energy,
 			recharge_speed * delta
-		) #this recharges smoothly the stamina while on the floor
-
-
-	# Apply gravity whenever the player is airborne
+		)
+ 
+	# Apply gravity while airborne.
 	if not is_on_floor():
 		var gravity = get_gravity()
-
-		# Fall faster when moving downward to make it nicer to look at
+ 
 		if velocity.y >= 0:
 			gravity *= 1.5
-
+ 
 		velocity += gravity * delta
-
-
-	# Start a takeoff boost and extra boost in mid-air to make the game easier (and also use up stamina for the mid-air boost)
+ 
+	# Takeoff and mid-air boost.
 	if Input.is_action_just_pressed("ui_accept"):
 		if is_on_floor():
 			if energy_left > 0:
@@ -75,67 +93,62 @@ func _physics_process(delta: float) -> void:
 		elif energy_left >= AIR_BOOST_COST:
 			air_boost_time = AIR_BOOST_DURATION
 			energy_left -= AIR_BOOST_COST
-			
-
-
+ 
+	# Flying.
 	if Input.is_action_pressed("ui_accept") and energy_left > 0.0:
 		var flight_power = FLIGHT_ACCELERATION
-
-		# Give extra flight power when falling otherwise it's impossible to get back up
+ 
 		if velocity.y > 0:
 			flight_power *= 1.5
-
+ 
 		velocity.y -= flight_power * delta
-
-		#This prevents the upward speed from going over its limit
 		velocity.y = maxf(velocity.y, -ASCEND_SPEED)
-
-		#Drain stamina while flying
+ 
 		energy_left = maxf(energy_left - delta, 0.0)
-
-
-	#mini air-boost with a short space press
+ 
+	# Small mid-air boost.
 	if air_boost_time > 0.0 and not is_on_floor():
 		velocity.y -= AIR_BOOST_ACCELERATION * delta
 		air_boost_time = maxf(air_boost_time - delta, 0.0)
-
-
-	#speed flight limit
+ 
 	velocity.y = maxf(velocity.y, -ASCEND_SPEED)
-
-
-	#This is for the horizontal movement
-	# Move left or right based on the arrow keys
+ 
+	# Horizontal movement.
 	var direction := Input.get_axis("ui_left", "ui_right")
-
+ 
 	if direction:
 		velocity.x = direction * SPEED
 	elif is_on_floor():
-		# Gradually slow down to create a subtle glide
 		velocity.x = move_toward(velocity.x, 0, deceleration * delta)
-		
-	else: velocity.x = move_toward(velocity.x, 0, deceleration/1.5 * delta)
-		
-		
+	else:
+		velocity.x = move_toward(velocity.x, 0, deceleration / 1.5 * delta)
+ 
+	# TEST: Every Space press removes half a heart.
+	# Remove this section later; enemies should call take_damage() instead.
 	if Input.is_action_just_pressed("ui_accept"):
-		take_damage(10.0)
-	
-	#sync stamina with the UI bar
+		take_damage(1.0)
+ 
 	stamina_bar.value = energy_left
-	
-	displayed_health = move_toward(
-	displayed_health,
-	health,
-	health_bar_speed * delta
-	)
-
-	health_bar.value = displayed_health
-
-
-	#apply
+ 
 	move_and_slide()
-
-func take_damage(amount: float) -> void:
-		health = maxf(health - amount, 0.0)
-		health_bar.value = health
-		
+ 
+ 
+func take_damage(_amount: float) -> void:
+	# Every call removes half a heart.
+	health = maxf(health - 1.0, 0.0)
+	update_hearts()
+ 
+ 
+func update_hearts() -> void:
+	for i in hearts.size():
+		var heart_health := clampi(roundi(health) - i * 2, 0, 2)
+ 
+		if heart_health == 2:
+			hearts[i].text = "♥"
+			hearts[i].modulate = Color.RED
+		elif heart_health == 1:
+			hearts[i].text = "◐"
+			hearts[i].modulate = Color.ORANGE
+		else:
+			hearts[i].text = "♡"
+			hearts[i].modulate = Color.DIM_GRAY
