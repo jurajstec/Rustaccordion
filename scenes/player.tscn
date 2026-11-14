@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://b33w5sux1hbyh" path="res://icon.svg" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://dymfibm32k3oc" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Script" uid="uid://cyhv6b0acdn1w" path="res://scenes/attack.gd" id="3_qhqgy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ygwv5"]
 size = Vector2(93, 80)
@@ -19,6 +20,8 @@ corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0dx5e"]
 
 [node name="Player" type="CharacterBody2D" unique_id=1498919203]
 z_index = 5
@@ -42,3 +45,13 @@ theme_override_styles/background = SubResource("StyleBoxFlat_qhqgy")
 theme_override_styles/fill = SubResource("StyleBoxFlat_g2els")
 fill_mode = 3
 show_percentage = false
+
+[node name="Attack" type="Area2D" parent="." unique_id=811138358]
+script = ExtResource("3_qhqgy")
+attack_distance = 220
+attack_speed = 600
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attack" unique_id=373311125]
+scale = Vector2(1.9597311, 4.085325)
+shape = SubResource("RectangleShape2D_0dx5e")
+disabled = true

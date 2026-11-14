@@ -25,10 +25,13 @@ var displayed_health: float
 
 var air_boost_time: float # Time for the extra mid-air boost(declared in the script a bit below)
 
+#attack
+var facing_direction = Vector2.RIGHT #sets the starting direction (in what direction will the accordion expand into?) It starts right because why not and changes below in the movement
+
 
 # Stamina bar
 @onready var stamina_bar: ProgressBar = $StaminaBar
-#HEalth bar
+# Health bar
 @onready var health_bar: ProgressBar = $"../CanvasLayer/HealthBar"
 
 
@@ -46,6 +49,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	
+
 
 
 	if is_on_floor():
@@ -110,6 +115,7 @@ func _physics_process(delta: float) -> void:
 
 	if direction:
 		velocity.x = direction * SPEED
+		facing_direction = Vector2(sign(direction),0) #the vector can face -1 left or 1 right, so the sign of the direction (1=right, -1=left, 0=neutal) will do it since it's already here. Sign can be -1 for negative numbers, +1 for positive...
 	elif is_on_floor():
 		# Gradually slow down to create a subtle glide
 		velocity.x = move_toward(velocity.x, 0, deceleration * delta)
@@ -130,6 +136,10 @@ func _physics_process(delta: float) -> void:
 	)
 
 	health_bar.value = displayed_health
+	
+	#attack input
+	if Input.is_action_just_pressed("attack"):
+		$Attack.start_attack(facing_direction.x) #the .x means i only need the x value
 
 
 	#apply
@@ -139,3 +149,5 @@ func take_damage(amount: float) -> void:
 		health = maxf(health - amount, 0.0)
 		health_bar.value = health
 		
+
+	
