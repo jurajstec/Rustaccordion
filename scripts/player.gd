@@ -21,6 +21,7 @@ var energy_left: float
 var health: float
 var displayed_health: float 
 @export var health_bar_speed: float = 100.0
+var flying = false
 
 
 var air_boost_time: float # Time for the extra mid-air boost(declared in the script a bit below)
@@ -50,9 +51,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	
-
-
-
+	flying = Input.is_action_pressed("ui_accept") and not $Attack.attacking
+	
 	if is_on_floor():
 		energy_left = move_toward(
 			energy_left,
@@ -73,7 +73,7 @@ func _physics_process(delta: float) -> void:
 
 
 	# Start a takeoff boost and extra boost in mid-air to make the game easier (and also use up stamina for the mid-air boost)
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("ui_accept") and not $Attack.attacking:
 		if is_on_floor():
 			if energy_left > 0:
 				velocity.y = -TAKEOFF_BOOST
@@ -83,7 +83,7 @@ func _physics_process(delta: float) -> void:
 			
 
 
-	if Input.is_action_pressed("ui_accept") and energy_left > 0.0:
+	if Input.is_action_pressed("ui_accept") and energy_left > 0.0 and not $Attack.attacking:
 		var flight_power = FLIGHT_ACCELERATION
 
 		# Give extra flight power when falling otherwise it's impossible to get back up
@@ -140,7 +140,6 @@ func _physics_process(delta: float) -> void:
 	#attack input
 	if Input.is_action_just_pressed("attack"):
 		$Attack.start_attack(facing_direction.x) #the .x means i only need the x value
-
 
 	#apply
 	move_and_slide()
