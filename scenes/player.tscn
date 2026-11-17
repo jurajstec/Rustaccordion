@@ -48,8 +48,8 @@ show_percentage = false
 
 [node name="Attack" type="Area2D" parent="." unique_id=811138358]
 script = ExtResource("3_qhqgy")
-attack_distance = 220
-attack_speed = 600
+attack_distance = 240
+attack_speed = 800
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Attack" unique_id=373311125]
 scale = Vector2(1.9597311, 4.085325)

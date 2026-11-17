@@ -9,12 +9,14 @@ var target_position: Vector2
 var attacking = false
 var retracting = false
 
+
 func _ready():
 	start_position = position
 	
 func start_attack(direction): #if anyone reads the code, the direction is here to be able to be one of 2 values: 1 (right) -1 (left) !!! there's no underscore for this function since it's not supposed to only be used in the script. Shoul'dnt chnage anything tho
 	if attacking:
 		return #if the player is already attacking, nothing happens
+	
 	
 	attacking = true
 	retracting = false #not retracting yet
@@ -25,6 +27,8 @@ func start_attack(direction): #if anyone reads the code, the direction is here t
 	$CollisionShape2D.disabled = false #I disabled it in the inspector so that it doesn't deal damage while inactive. Here, it's enabled. The $ sign is here cause its a child node
 	
 func _physics_process(delta):
+	
+	
 	if not attacking:
 		return #don't attack if you aren't attacking
 		
