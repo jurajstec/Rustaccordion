@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cmpdueumiba2a" path="res://scenes/ground.tscn" id="2_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://cquit1txr7hmy" path="res://scenes/platform.tscn" id="3_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://envumitt2iff" path="res://scenes/killzone.tscn" id="4_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://motahsbqpuld" path="res://scenes/slime.tscn" id="6_p57ef"]
 
 [sub_resource type="GDScript" id="GDScript_iywne"]
 script/source = "extends Node2D
@@ -45,6 +46,7 @@ scale = Vector2(10.813937, 7.3672543)
 
 [node name="platform" parent="." unique_id=1478797015 instance=ExtResource("3_lnu2h")]
 position = Vector2(258, -173)
+scale = Vector2(2.1148436, 1)
 
 [node name="platform2" parent="." unique_id=989877246 instance=ExtResource("3_lnu2h")]
 position = Vector2(-385, -431)
@@ -69,3 +71,9 @@ offset_left = 836.0
 offset_top = 608.0
 offset_right = 1136.0
 offset_bottom = 633.0
+
+[node name="Slime" parent="." unique_id=696759181 instance=ExtResource("6_p57ef")]
+position = Vector2(-427.99997, 40)
+
+[node name="Slime2" parent="." unique_id=1847958260 instance=ExtResource("6_p57ef")]
+position = Vector2(257, -245.99998)

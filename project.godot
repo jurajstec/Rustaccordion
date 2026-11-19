@@ -24,6 +24,10 @@ window/stretch/aspect="expand"
 
 project/assembly_name="Rustaccordion"
 
+[global_group]
+
+player=""
+
 [input]
 
 attack={
