@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://cmpdueumiba2a" path="res://scenes/ground.tscn" id="2_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://cquit1txr7hmy" path="res://scenes/platform.tscn" id="3_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://envumitt2iff" path="res://scenes/killzone.tscn" id="4_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://dnc2v48incqv2" path="res://left_wall.tscn" id="6_p57ef"]
+[ext_resource type="PackedScene" uid="uid://w7uwo4n581c8" path="res://right_wall.tscn" id="7_u5sy4"]
 
 [sub_resource type="GDScript" id="GDScript_iywne"]
 script/source = "extends Node2D
@@ -39,8 +41,15 @@ limit_smoothed = true
 position_smoothing_enabled = true
 position_smoothing_speed = 3.0
 
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2019519749]
+offset_left = -796.0
+offset_top = -1694.0
+offset_right = 763.0
+offset_bottom = 396.0
+color = Color(1, 1, 1, 0.6745098)
+
 [node name="ground" parent="." unique_id=890221615 instance=ExtResource("2_yqjtg")]
-position = Vector2(2, 169)
+position = Vector2(-46.000008, 179)
 scale = Vector2(10.813937, 7.3672543)
 
 [node name="platform" parent="." unique_id=1478797015 instance=ExtResource("3_lnu2h")]
@@ -69,3 +78,10 @@ offset_left = 836.0
 offset_top = 608.0
 offset_right = 1136.0
 offset_bottom = 633.0
+
+[node name="Left-wall" parent="." unique_id=1138153697 instance=ExtResource("6_p57ef")]
+position = Vector2(-939.00006, -3899)
+scale = Vector2(3, 3)
+
+[node name="right_wall" parent="." unique_id=841189883 instance=ExtResource("7_u5sy4")]
+position = Vector2(732, -406)

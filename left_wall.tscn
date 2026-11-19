@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://dnc2v48incqv2"]
+
+[ext_resource type="Texture2D" uid="uid://b33w5sux1hbyh" path="res://icon.svg" id="1_pbn58"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rm8it"]
+size = Vector2(118, 1500)
+
+[node name="Left-wall" type="StaticBody2D" unique_id=1138153697]
+position = Vector2(41, 34)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1414703616]
+position = Vector2(17, 664.75)
+scale = Vector2(1, 11.832031)
+texture = ExtResource("1_pbn58")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=814171855]
+position = Vector2(19, 644)
+shape = SubResource("RectangleShape2D_rm8it")
