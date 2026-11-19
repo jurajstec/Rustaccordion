@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://motahsbqpuld"]
+
+[ext_resource type="Script" uid="uid://do5nesp2xgjue" path="res://scripts/slime.gd" id="1_n6pvg"]
+[ext_resource type="PackedScene" uid="uid://envumitt2iff" path="res://scenes/killzone.tscn" id="1_p2gj0"]
+[ext_resource type="Texture2D" uid="uid://b33w5sux1hbyh" path="res://icon.svg" id="2_n6pvg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ygwv5"]
+size = Vector2(118, 124)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r7nhv"]
+size = Vector2(123.28374, 121.25698)
+
+[node name="Slime" type="CharacterBody2D" unique_id=1055573765]
+scale = Vector2(0.61646414, 0.5113108)
+script = ExtResource("1_n6pvg")
+speed = 100.0
+
+[node name="Killzone" parent="." unique_id=1529094594 instance=ExtResource("1_p2gj0")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Killzone" unique_id=1466095860]
+position = Vector2(0, 2.0000002)
+scale = Vector2(1.0000001, 1.0000001)
+shape = SubResource("RectangleShape2D_ygwv5")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1737129761]
+texture = ExtResource("2_n6pvg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1195344398]
+scale = Vector2(1.0000001, 1.0000001)
+shape = SubResource("RectangleShape2D_r7nhv")
