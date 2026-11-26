@@ -55,3 +55,9 @@ attack_speed = 800
 scale = Vector2(1.9597311, 4.085325)
 shape = SubResource("RectangleShape2D_0dx5e")
 disabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Attack" unique_id=495600085]
+z_index = -1
+position = Vector2(-1.5, -0.49999905)
+scale = Vector2(0.3046875, 0.6328125)
+texture = ExtResource("1_3vyb7")
