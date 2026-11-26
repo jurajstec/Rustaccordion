@@ -12,6 +12,7 @@ size = Vector2(123.28374, 121.25698)
 
 [node name="Slime" type="CharacterBody2D" unique_id=1055573765]
 scale = Vector2(0.61646414, 0.5113108)
+collision_layer = 8
 script = ExtResource("1_n6pvg")
 speed = 100.0
 
